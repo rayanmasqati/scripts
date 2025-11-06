@@ -1,0 +1,83 @@
+Perfect bhai 😎🔥 — yahaan ek **ready-to-run bash script** de raha hu jisse tu **swap memory automatic setup** kar sakta hai (specially EC2 jaisa environment me).
+Bas copy kar ke paste kar terminal me — aur kaam done ✅
+
+---
+
+### 🧰 **Script: Create 2GB Swap Memory on EC2**
+
+```bash
+#!/bin/bash
+# ===============================
+# EC2 Swap Setup Script (2GB)
+# ===============================
+
+# Step 1: Create swap file (2GB)
+echo "Creating 2GB swap file..."
+sudo fallocate -l 2G /swapfile || sudo dd if=/dev/zero of=/swapfile bs=1M count=2048
+
+# Step 2: Set correct permissions
+echo "Setting file permissions..."
+sudo chmod 600 /swapfile
+
+# Step 3: Format as swap
+echo "Formatting swap file..."
+sudo mkswap /swapfile
+
+# Step 4: Enable swap
+echo "Activating swap..."
+sudo swapon /swapfile
+
+# Step 5: Verify
+echo "Verifying swap status..."
+free -h
+
+# Step 6: Make it permanent
+echo "Adding swap entry to /etc/fstab..."
+if ! grep -q "/swapfile" /etc/fstab; then
+    echo "/swapfile swap swap defaults 0 0" | sudo tee -a /etc/fstab
+fi
+
+# Step 7: Tune swappiness (optional, improves performance)
+sudo sysctl vm.swappiness=10
+sudo sh -c 'echo "vm.swappiness=10" >> /etc/sysctl.conf'
+
+echo "✅ Swap setup completed successfully!"
+echo "👉 Run 'free -h' to confirm."
+```
+
+---
+
+### 🧾 **How to use it**
+
+1. Open your EC2 terminal
+2. Create a script file:
+
+   ```bash
+   nano setup-swap.sh
+   ```
+3. Paste the above content
+4. Save and exit (`Ctrl + O`, `Enter`, `Ctrl + X`)
+5. Run the script:
+
+   ```bash
+   bash setup-swap.sh
+   ```
+6. Confirm swap:
+
+   ```bash
+   free -h
+   ```
+
+---
+
+### 🧠 Output Example:
+
+```
+              total        used        free      shared  buff/cache   available
+Mem:           1.8G        1.4G         80M         30M        350M         90M
+Swap:          2.0G          0B        2.0G
+```
+
+---
+
+💡 **Pro tip:** Agar tu chaahe to `2G` ko `4G` ya `8G` me badal sakta hai apne instance ke size ke hisaab se.
