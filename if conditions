@@ -64,7 +64,40 @@ fi
 -d dir
 
 sting logic(=,>,<,=!) and numeric logic(-gt, -ge, -eq, lt)
+if you want to do same job on different resources we can use for loop
+FOR loop means: "ek ek item uthao aur same kaam karo"
 
+type of loops:
+for loop = same work multiple items/list pe karo
+while loop = jab tak condition true hai run karo
+until loop = jab tak condition false hai run karo
+
+there are 3 ways to use those loops in a format.
+1. [condition]
+example:
+count=1
+
+while [ $count -le 5 ]
+do
+   echo $count
+   count=$((count+1))
+done
+
+2. command
+example:
+while ! systemctl is-active nginx > /dev/null 2>&1
+do
+   echo "waiting..."
+   sleep 5
+done
+
+3. infinite loop true
+example:
+while true
+do
+   date
+   sleep 2
+done
 
 
 echo "===== SYSTEM CHECK END ====="
