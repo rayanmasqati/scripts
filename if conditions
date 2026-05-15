@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# =========================
+# SYSTEM HEALTH CHECK SCRIPT
+# Created Date =
+# Modification =
+# purpose =
+# author =
+# =========================
+
+SERVICE="nginx"
+FILE="/etc/passwd"
+DIR="/tmp"
+CPU=85
+
+echo "===== SYSTEM CHECK START ====="
+
+# 1. FILE CHECK
+if [ -f "$FILE" ]
+then
+    echo "File exists: $FILE"
+else
+    echo "File not found"
+fi
+
+# 2. DIRECTORY CHECK
+if [ -d "$DIR" ]
+then
+    echo "Directory exists: $DIR"
+else
+    echo "Directory not found"
+fi
+
+# 3. CPU CHECK (AND condition)
+if [ "$CPU" -gt 80 ] && [ "$CPU" -lt 90 ]
+then
+    echo "CPU Warning level"
+else
+    echo "CPU Normal/Critical level"
+fi
+
+# 4. USER CHECK (OR condition)
+if [ "$USER" = "root" ] || [ "$USER" = "ubuntu" ]
+then
+    echo "User allowed: $USER"
+else
+    echo "User not allowed"
+fi
+
+# 5. SERVICE CHECK (real production style)
+systemctl status $SERVICE > /dev/null 2>&1
+
+if [ $? -eq 0 ]
+then
+    echo "$SERVICE is RUNNING"
+else
+    echo "$SERVICE is STOPPED"
+fi
+-----------------------------------------------------------------
+
+-z empty
+-n not empty
+-f file
+-d dir
+
+sting logic(=,>,<,=!) and numeric logic(-gt, -ge, -eq, lt)
+
+
+
+echo "===== SYSTEM CHECK END ====="
