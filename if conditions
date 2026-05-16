@@ -57,7 +57,17 @@ else
     echo "$SERVICE is STOPPED"
 fi
 -----------------------------------------------------------------
+we can write for loop in 3 different ways
+1. list style
+for file in app.log nginx.log
 
+2. command style
+for pod in $(kubectl get pods -o name)
+
+3. Range style
+for i in {1..5}
+
+Below are the -flags which we can use in for conditions.
 -z empty
 -n not empty
 -f file
